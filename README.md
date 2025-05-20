@@ -29,7 +29,17 @@ $ influx
 
 >create database <데이터베이스이름>
 확인 : show databases
-``` 
+```
+
+### influxdb import with python
+```
+pip install influxdb
+```
+hint: See PEP 668 for the detailed specification.
+```
+  sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
+```
+
 ### Grafana Installation
 1. Install the prerequisite packages
 ```
