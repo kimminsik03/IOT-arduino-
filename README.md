@@ -2,7 +2,7 @@
 
 
 
-nfluxDB 설치
+### InfluxDB 설치
 
 InfluxDB download key using wget
 
