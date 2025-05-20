@@ -33,8 +33,10 @@ show databases(How to check the database I created)
 ```
 pip install influxdb
 ```
-### hint: See PEP 668 for the detailed specification.
+
+### hint: See PEP 668 for the detailed specification 
 ```
+  //위에서 pip install influxdb 명령어가 에러가 났을 때 
   sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 ```
 
