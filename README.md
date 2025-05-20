@@ -23,7 +23,7 @@ InfluxDB is status (service)
 ```
   sudo service influxdb status
 ```
-###InfluxDB 데이터베이스 만들기
+### InfluxDB 데이터베이스 만들기
 ```
 $ influx
 
