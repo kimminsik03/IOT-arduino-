@@ -1,0 +1,136 @@
+7주차 88페이지 프로그램 
+
+
+프로그램이 어떻게 동작하는지 순서대로 정리해볼게요
+loop()는 엄청 빠르게 계속 반복돼요. (1초에 수천 번도 돌아갈 수 있어요!)
+
+그 안에서 loopCnt++로 숫자를 하나씩 계속 더해요.
+
+하지만 if (millis() > nextMil) 이 조건은 **1초가 지나기 전까지는 계속 거짓(false)**이라서 실행되지 않아요.
+
+그러다 1초가 딱 지나면,
+
+if문 안으로 들어가서
+
+그동안 쌓인 loopCnt 값을 화면에 보여주고,
+
+loopCnt = 0;으로 다시 초기화
+
+그 다음 1초 동안 또 다시 계속 숫자를 세기 시작
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println();
+
+}
+
+void loop() {
+  static unsigned long loopCnt =0;
+  static unsigned long nextMil = millis() + 1000;
+
+  loopCnt++;
+
+  if(millis() > nextMil){
+    nextMil = millis() + 1000;
+    Serial.println(loopcnt);
+    loopCnt =0;
+  }
+
+}
+
+
+
+millis -> 아두이노의 작동 시간을 반환해줌 
+
+우리가 한 주기적으로 if블록 실행하는 거는 정확히 1초마다 실행되는 건 아님 그래서 
+정확한 값을 원하면 ticker 사용 아두이노 우노에서는 기본 라이브러리로 제공 x 
+-> simpleTimer라는 외부 라이브러리로 테스트 해봄 
+
+블로킹 
+	-특정 기능 수행에 로직을 묶어 놓음 
+	-아두이노에서는 블로킹 논블로킹(선호 방식) 방식이 있음
+	-delay() 대표적인 블로킹 함수 
+
+
+인터럽트 신호 
+
+
+
+simpletimer 
+cpp파일 -> 실제 코드를 구현
+h파일  -> 이런 코드가 있다고 명시 
+
+생성자는 인수 있는 형태 없는 형태를 구분하여 만들 수 있음 
+자바,C++는 인수를 넣을려면 따로 만들어야 함 파이썬 하나로 만들 수 있음 
+
+94페이지 실습
+#include <SimpleTimer.h>
+
+SimpleTimer timerCnt;//타이머 객체 
+
+unsigned long loopCnt;//수를 셀 변수 
+
+void timeCntFunc(){ // 1초마다 센 값을 화면에 뿌려주는 함수 선언 
+  Serial.println(loopCnt);
+  loopCnt =0;
+}
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println();
+
+timerCnt.setInterval(1000,timeCntFunc); // 1초마다 2번째 인수를 호출
+}
+
+void loop() {
+timerCnt.run();//타이머 작동
+loopCnt++;//
+
+}
+
+100페이지 
+int a =2;
+int b =3;
+int c;
+
+float f1 = 2.5;
+float f2 = 3.6;
+float f3;
+
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println();
+
+  c =sum(a,b);
+  Serial.println(c);
+
+  sum(f1,f2,f3);
+  Serial.println(f3);
+
+}
+
+void loop() {}
+
+int sum(int a1 , int a2){
+
+  int a3 = a1 + a2;
+  return a3;
+}
+
+void sum(float a ,float b ,float& c){
+  c = a+b;
+
+}
+
+함수 오버로딩 
+	매개 변수형이나 개수를 다르게 갖는 것
+
+108 클래스는 명령어이므로 끝에 ;를 붙여야 함 
+
+
+
+
+
+
+
