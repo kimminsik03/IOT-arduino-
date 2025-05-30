@@ -1,0 +1,75 @@
+IOT 아두이노 펌웨어 코드 (미세먼지 센서) 12주차 
+
+int Vo = Α0;
+int V_led 12;
+
+float Vo_value=0;
+float Voltage = 0;
+float dustDensity = 0;
+
+void setup(){
+Serial.begin(9600);
+pinMode (V_led, OUTPUT);
+pinMode (Vo, INPUT);
+}
+
+void loop(){
+digitalWrite(V_led, LOW);
+delayMicroseconds(280);
+
+Vo_value = analogRead(Vo);
+delayMicroseconds (40);
+
+digitalWrite(V_led, HIGH);
+delayMicroseconds (9680);
+
+Voltage =  Vo_value*5.0 / 1023.0;
+dustDensity (Voltage - 0.5)/0.005;
+
+#Serial.print("dust=");
+Serial.println(dustDensity);
+
+delay(1000)
+
+===========================================
+
+12주차 파이썬 미들웨어 코드 
+
+import time
+import requests,json
+from influxdb import InfluxDBClient as influxdb
+import serial
+
+seri = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=None)
+
+while True:
+    time.sleep(1)
+    
+    if seri.in_waiting != 0: #시리얼에 읽을 데이터가 있으면
+	content = seri.readline()
+        a = float(content.decode()) 
+	# 데이터를 받아 올 때는 바이트 단위로 받아오는데 
+		그걸 문자열로 변경해주고 실수형으로 형변환해줌
+      #a = float(b.split("=")[1])  아두이노에서(b = "dust = 300.0") 값이 오면	
+      
+	data = [{
+		"measurement": "dust",
+                "tags": {"InhaUni": "2222"},
+                "fields": {"dust": a}   
+		  }]
+
+        client = None
+	try:
+		client = influxdb('localhost', 8086, 'root', 'root', 'dust')
+	except Exception as e:
+		print("Exception"+ str(e))
+	if client is not None:
+		try:
+			client.write_points(data)
+		except Exception as e:
+			print("Exception"+str(e))
+		finally:
+			client.close()
+	print(a)
+	print("running influxdb OK")
+

@@ -1,0 +1,74 @@
+IOT 12주차 내용 정리 + 깃허브 참고
+
+앞서 해본 미세먼지 센서를 가지고 센서 데이터를 라즈베이파이에 설치된 influxDB를 통해 저장하고 
+이 데이터를 그라파나를 가지고 확인해 보는 작업을 해봄 
++ 라즈베리파이가 미들웨어 역할
+
+
+1. pc에서 아두이노 IDE을 통해 아두이노 펌웨어를 미세먼지 센서가 연결된 아두이노에 업로드 
+	
+	-> 미세먼지 센서 코드 참고 
+	-> 코드에서 dust 부분은 제외하고 프로그래밍 
+	-> 아두이노에 미세먼지 센서 연결   
+		GRD,VCC,LED,OUT-> GRD,5V  
+		LED -> 디지털핀으로 연결  EX) 12
+		OUT -> 아날로그핀으로 연결 EX) A0
+	
+
+2. 원래 라즈베리파이에서도 인터넷은 사용 가능한데 느림 
+	
+	-> 내 깃허브에 설치 명령어들을 미리 적어 놓고 라즈베리파이에서 깃허브에 접속해 사용 
+	-> read me에서 내용 정리할 때 쓴 문법 
+	-> # 개수 -> html에서 h1~h6 역할
+	-> ``` ```(백틱) -> 안에 코드가 들어감 
+	
+
+3. 라즈베리파이(라즈비안os) 환경에서 influxDB 설치 
+	
+	-> 서비스 시작
+	-> 데이터베이스 만들기
+	-> 데이터베이스 유무 확인 
+	
+
+4. 아두이노에서 나오는 데이터들을 influxDB에 저장하기 위해 파이썬 미들웨어 작성 
+		
+		->여기에서 필요한 influxdb 라이브러리 설치 
+		->파이썬 미들웨어 파일 이름은  InfluxDB.py 
+		
+		-> 중요 !!!!!!(시험)  센서에서 데이터를 가져올 때 
+			
+			a = "300.0"
+			print(float(a)) -> 우리가 쓴 형태 
+			
+			b = "dust = 300.0"
+			print(float(b.split("=")[1])) 
+			-> 만약에 이렇게 문자열이 조합되서 오면 우리가 원하는 값만 
+			    추출하기 위해서 split을 사용해서 우리가 원하는 값만 추출할 수 있게 만들어줌
+ 
+5.그라파나 설치 
+	
+	서비스 시작 
+
+6. 앞에서 만들었던dustInfluxdb.py파일을 컴파일
+	
+	python dustInfluxdb.py (해당파일이 있는 위치에서) 
+
+7.웹페이지에서 그라파나 접속
+	
+	->url창에서 localhost:3000치고 admin admin 으로 로그인 
+	->connections ->data sources에 들어감 
+	-> influxdb 선택 -> add new database 선택
+	-> 별칭 정하기 -> url 적기 (http://localhost:8086) 
+				만약 다른 사람것으로 접속시 localhost 부분만 변경
+	
+	파이썬 미들웨어에서 설정한 값
+	-> database  dust
+	-> user	 root
+	-> password  root 
+	
+	-> save & test 실행  
+	-> menu->dashboard -> create dashboard ->add visualization
+
+	밑에서 from에서 dust 선택
+	where에서 inhaUni::tag = 2222 선택
+	select에서 field(dust) 선택 
