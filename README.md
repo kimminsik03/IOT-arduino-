@@ -64,7 +64,7 @@ sudo systemctl start grafana-server
 ```
 
 # ===========================================
-
+# 14 주차 
 # 라즈베리파이5 TinyOS , NesC , Oscilloscope.py(미들웨어) 설치
 
 ### 사전 설치
